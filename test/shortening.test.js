@@ -1,8 +1,21 @@
 const shortening = require("../src/shortening");
 
+test("should work with all the supported valueUnits", () => {
+    const value = 123;
+    testShortening(value, 0, "");
+    testShortening(value, 3, "K");
+    testShortening(value, 6, "M");
+    testShortening(value, 9, "bn");
+    testShortening(value, 12, "T");
+})
+
+const testShortening = (value, power, valueUnit) => {
+    expect(shortening(value, valueUnit))
+        .toStrictEqual({value: value / 10 ** power, valueUnit: valueUnit});
+}
+
 test("should return converted value, if a valid desiredValueUnit is given.", () => {
-    expect(shortening(123, "K"))
-        .toStrictEqual({value: 0.123, valueUnit: "K"});
+    testShortening(123, 3, "K");
 })
 
 test("should return value and valueUnit as-is, if an invalid desiredValueUnit is passed as a parameter.", () => {
